@@ -1,17 +1,21 @@
 // ============================================================
-//  VERSIÓN SIMPLIFICADA - SOLO PARA PROBAR BOTONES
+//  RICK AND MORTY SYSTEM - VERSIÓN CORREGIDA
 // ============================================================
 
-console.log('🚀 Cargando versión simplificada...');
+console.log('🚀 Iniciando Rick and Morty System...');
 
-// Usuarios en localStorage
+// ============================================================
+//  USUARIOS
+// ============================================================
 let users = JSON.parse(localStorage.getItem('rickmorty_users')) || [];
 
 function saveUsers() {
     localStorage.setItem('rickmorty_users', JSON.stringify(users));
 }
 
-// Mostrar notificación
+// ============================================================
+//  NOTIFICACIONES
+// ============================================================
 function showNotification(msg, type = 'success') {
     const n = document.getElementById('notification');
     if (!n) return;
@@ -22,88 +26,176 @@ function showNotification(msg, type = 'success') {
     n._timeout = setTimeout(() => n.classList.add('hidden'), 4000);
 }
 
-// Mostrar/ocultar formularios
-function toggleForms(form) {
+// ============================================================
+//  NAVEGACIÓN ENTRE FORMULARIOS
+// ============================================================
+function showForm(formName) {
     const login = document.getElementById('loginForm');
     const register = document.getElementById('registerForm');
     const forgot = document.getElementById('forgotPasswordForm');
     
-    if (login) login.classList.remove('active');
-    if (register) register.classList.remove('active');
-    if (forgot) forgot.classList.remove('active');
+    // Ocultar todos
+    if (login) login.style.display = 'none';
+    if (register) register.style.display = 'none';
+    if (forgot) forgot.style.display = 'none';
     
-    if (form === 'login' && login) login.classList.add('active');
-    else if (form === 'register' && register) register.classList.add('active');
-    else if (form === 'forgot' && forgot) forgot.classList.add('active');
+    // Mostrar el seleccionado
+    if (formName === 'login' && login) login.style.display = 'block';
+    else if (formName === 'register' && register) register.style.display = 'block';
+    else if (formName === 'forgot' && forgot) forgot.style.display = 'block';
 }
 
-// Mostrar pantalla principal
-function showMain() {
+// ============================================================
+//  MOSTRAR PANTALLA PRINCIPAL
+// ============================================================
+function showMainScreen() {
     const auth = document.getElementById('authSection');
     const main = document.getElementById('mainSection');
     if (auth) auth.style.display = 'none';
-    if (main) main.classList.remove('hidden');
+    if (main) main.style.display = 'block';
 }
 
-// Mostrar pantalla de login
-function showAuth() {
+function showAuthScreen() {
     const auth = document.getElementById('authSection');
     const main = document.getElementById('mainSection');
     if (auth) auth.style.display = 'flex';
-    if (main) main.classList.add('hidden');
+    if (main) main.style.display = 'none';
 }
 
 // ============================================================
-//  EVENTOS - CUANDO EL DOM ESTÁ LISTO
+//  CARGAR PERSONAJES
+// ============================================================
+async function loadCharacters() {
+    const tbody = document.getElementById('charactersTableBody');
+    if (!tbody) return;
+    
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">🔄 Cargando personajes...</td></tr>';
+    
+    try {
+        const res = await fetch('https://rickandmortyapi.com/api/character');
+        const data = await res.json();
+        
+        if (data && data.results) {
+            tbody.innerHTML = data.results.map(char => `
+                <tr>
+                    <td>${char.id}</td>
+                    <td>${char.name}</td>
+                    <td>${char.species}</td>
+                    <td>${char.gender}</td>
+                    <td>${char.type || '-'}</td>
+                    <td>
+                        <button class="action-btn view" onclick="alert('Ver personaje ${char.id}')">👁️ Ver</button>
+                        <button class="action-btn edit" onclick="alert('Editar personaje ${char.id}')">✏️ Editar</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+    } catch (e) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">❌ Error al cargar personajes</td></tr>';
+        console.error(e);
+    }
+}
+
+// ============================================================
+//  CARGAR EPISODIOS
+// ============================================================
+async function loadEpisodes() {
+    const tbody = document.getElementById('episodesTableBody');
+    if (!tbody) return;
+    
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">🔄 Cargando episodios...</td></tr>';
+    
+    try {
+        const res = await fetch('https://rickandmortyapi.com/api/episode');
+        const data = await res.json();
+        
+        if (data && data.results) {
+            tbody.innerHTML = data.results.map(ep => `
+                <tr>
+                    <td>${ep.id}</td>
+                    <td>${ep.name}</td>
+                    <td>${ep.air_date}</td>
+                    <td>${ep.episode}</td>
+                    <td>
+                        <button class="action-btn view" onclick="alert('Ver episodio ${ep.id}')">👁️ Ver</button>
+                        <button class="action-btn edit" onclick="alert('Editar episodio ${ep.id}')">✏️ Editar</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+    } catch (e) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">❌ Error al cargar episodios</td></tr>';
+        console.error(e);
+    }
+}
+
+// ============================================================
+//  FUNCIÓN PRINCIPAL - SE EJECUTA CUANDO CARGA LA PÁGINA
 // ============================================================
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('✅ DOM listo - configurando eventos...');
+    console.log('✅ DOM cargado - configurando eventos...');
     
-    // --- BOTÓN REGISTRARSE ---
-    const registerBtn = document.getElementById('showRegister');
-    if (registerBtn) {
-        registerBtn.addEventListener('click', function(e) {
+    // ============================================================
+    //  MOSTRAR FORMULARIO DE LOGIN POR DEFECTO
+    // ============================================================
+    showForm('login');
+    showAuthScreen();
+    
+    // ============================================================
+    //  BOTÓN: REGISTRARSE
+    // ============================================================
+    const showRegister = document.getElementById('showRegister');
+    if (showRegister) {
+        showRegister.addEventListener('click', function(e) {
             e.preventDefault();
             console.log('🔄 Click en "Registrarse"');
-            toggleForms('register');
+            showForm('register');
         });
     } else {
-        console.error('❌ No encontré #showRegister');
+        console.error('❌ No se encontró #showRegister');
     }
     
-    // --- BOTÓN INICIAR SESIÓN ---
-    const loginBtn = document.getElementById('showLogin');
-    if (loginBtn) {
-        loginBtn.addEventListener('click', function(e) {
+    // ============================================================
+    //  BOTÓN: INICIAR SESIÓN
+    // ============================================================
+    const showLogin = document.getElementById('showLogin');
+    if (showLogin) {
+        showLogin.addEventListener('click', function(e) {
             e.preventDefault();
             console.log('🔄 Click en "Iniciar sesión"');
-            toggleForms('login');
+            showForm('login');
         });
     } else {
-        console.error('❌ No encontré #showLogin');
+        console.error('❌ No se encontró #showLogin');
     }
     
-    // --- BOTÓN OLVIDÉ CONTRASEÑA ---
-    const forgotBtn = document.getElementById('showForgotPassword');
-    if (forgotBtn) {
-        forgotBtn.addEventListener('click', function(e) {
+    // ============================================================
+    //  BOTÓN: OLVIDÉ CONTRASEÑA
+    // ============================================================
+    const showForgot = document.getElementById('showForgotPassword');
+    if (showForgot) {
+        showForgot.addEventListener('click', function(e) {
             e.preventDefault();
             console.log('🔄 Click en "Olvidé contraseña"');
-            toggleForms('forgot');
+            showForm('forgot');
         });
     }
     
-    // --- VOLVER A LOGIN DESDE FORGOT ---
-    const backBtn = document.getElementById('showLoginFromForgot');
-    if (backBtn) {
-        backBtn.addEventListener('click', function(e) {
+    // ============================================================
+    //  BOTÓN: VOLVER A LOGIN DESDE FORGOT
+    // ============================================================
+    const backToLogin = document.getElementById('showLoginFromForgot');
+    if (backToLogin) {
+        backToLogin.addEventListener('click', function(e) {
             e.preventDefault();
             console.log('🔄 Volver a login');
-            toggleForms('login');
+            showForm('login');
         });
     }
     
-    // --- FORMULARIO DE REGISTRO ---
+    // ============================================================
+    //  FORMULARIO: REGISTRO
+    // ============================================================
     const registerForm = document.getElementById('registerFormElement');
     if (registerForm) {
         registerForm.addEventListener('submit', function(e) {
@@ -133,14 +225,16 @@ document.addEventListener('DOMContentLoaded', function() {
             users.push({ name, email, password });
             saveUsers();
             showNotification('✅ ¡Registro exitoso! Ahora inicia sesión', 'success');
-            toggleForms('login');
-            console.log('✅ Usuario registrado:', email);
+            showForm('login');
+            console.log('✅ Usuario registrado:', email, 'Total:', users.length);
         });
     } else {
-        console.error('❌ No encontré #registerFormElement');
+        console.error('❌ No se encontró #registerFormElement');
     }
     
-    // --- FORMULARIO DE LOGIN ---
+    // ============================================================
+    //  FORMULARIO: LOGIN
+    // ============================================================
     const loginForm = document.getElementById('loginFormElement');
     if (loginForm) {
         loginForm.addEventListener('submit', function(e) {
@@ -158,7 +252,9 @@ document.addEventListener('DOMContentLoaded', function() {
             const user = users.find(u => u.email === email && u.password === password);
             if (user) {
                 showNotification('✅ ¡Bienvenido ' + user.name + '!', 'success');
-                showMain();
+                showMainScreen();
+                document.getElementById('userNameDisplay').textContent = user.name;
+                loadCharacters();
                 console.log('✅ Login exitoso:', user.name);
             } else {
                 showNotification('❌ Credenciales incorrectas', 'error');
@@ -166,10 +262,12 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     } else {
-        console.error('❌ No encontré #loginFormElement');
+        console.error('❌ No se encontró #loginFormElement');
     }
     
-    // --- FORMULARIO DE RECUPERACIÓN ---
+    // ============================================================
+    //  FORMULARIO: RECUPERAR CONTRASEÑA
+    // ============================================================
     const forgotForm = document.getElementById('forgotPasswordFormElement');
     if (forgotForm) {
         forgotForm.addEventListener('submit', function(e) {
@@ -177,27 +275,79 @@ document.addEventListener('DOMContentLoaded', function() {
             const email = document.getElementById('forgotEmail')?.value.trim();
             const user = users.find(u => u.email === email);
             if (user) {
-                showNotification('📧 Enlace enviado (simulado)', 'success');
+                showNotification('📧 Enlace enviado a tu correo (simulado)', 'success');
             } else {
                 showNotification('❌ Correo no encontrado', 'error');
             }
         });
     }
     
-    // --- BOTÓN CERRAR SESIÓN ---
+    // ============================================================
+    //  BOTÓN: CERRAR SESIÓN
+    // ============================================================
     const logoutBtn = document.getElementById('logoutBtn');
     if (logoutBtn) {
         logoutBtn.addEventListener('click', function() {
-            showAuth();
+            showAuthScreen();
             showNotification('👋 Sesión cerrada', 'success');
             console.log('🔄 Sesión cerrada');
         });
     }
     
-    // --- INICIALIZAR ---
-    toggleForms('login');
-    showAuth();
-    console.log('✅ Eventos configurados. Usuarios:', users.length);
+    // ============================================================
+    //  NAVEGACIÓN: PERSONAJES
+    // ============================================================
+    const navChars = document.getElementById('navCharacters');
+    if (navChars) {
+        navChars.addEventListener('click', function() {
+            console.log('🔄 Navegando a Personajes');
+            document.getElementById('charactersSection').style.display = 'block';
+            document.getElementById('episodesSection').style.display = 'none';
+            navChars.classList.add('active');
+            document.getElementById('navEpisodes').classList.remove('active');
+            loadCharacters();
+        });
+    }
+    
+    // ============================================================
+    //  NAVEGACIÓN: EPISODIOS
+    // ============================================================
+    const navEps = document.getElementById('navEpisodes');
+    if (navEps) {
+        navEps.addEventListener('click', function() {
+            console.log('🔄 Navegando a Episodios');
+            document.getElementById('episodesSection').style.display = 'block';
+            document.getElementById('charactersSection').style.display = 'none';
+            navEps.classList.add('active');
+            document.getElementById('navCharacters').classList.remove('active');
+            loadEpisodes();
+        });
+    }
+    
+    // ============================================================
+    //  TEMA OSCURO/CLARO
+    // ============================================================
+    const themeToggle = document.getElementById('themeToggle');
+    if (themeToggle) {
+        themeToggle.addEventListener('click', function() {
+            const html = document.documentElement;
+            const current = html.getAttribute('data-theme');
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('rickmorty_theme', newTheme);
+            themeToggle.textContent = newTheme === 'dark' ? '🌙' : '☀️';
+        });
+    }
+    
+    // ============================================================
+    //  CONFIGURAR TEMA INICIAL
+    // ============================================================
+    const savedTheme = localStorage.getItem('rickmorty_theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    if (themeToggle) {
+        themeToggle.textContent = savedTheme === 'dark' ? '🌙' : '☀️';
+    }
+    
+    console.log('✅ Todos los eventos configurados correctamente');
+    console.log('👥 Usuarios guardados:', users.length);
 });
-
-console.log('📦 Script cargado correctamente');
