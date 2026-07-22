@@ -27,7 +27,7 @@ function showNotification(msg, type = 'success') {
 }
 
 // ============================================================
-//  NAVEGACIÓN ENTRE FORMULARIOS
+//  MOSTRAR FORMULARIOS
 // ============================================================
 function showForm(formName) {
     const login = document.getElementById('loginForm');
@@ -40,13 +40,20 @@ function showForm(formName) {
     if (forgot) forgot.style.display = 'none';
     
     // Mostrar el seleccionado
-    if (formName === 'login' && login) login.style.display = 'block';
-    else if (formName === 'register' && register) register.style.display = 'block';
-    else if (formName === 'forgot' && forgot) forgot.style.display = 'block';
+    if (formName === 'login' && login) {
+        login.style.display = 'block';
+        login.classList.add('active');
+    } else if (formName === 'register' && register) {
+        register.style.display = 'block';
+        register.classList.add('active');
+    } else if (formName === 'forgot' && forgot) {
+        forgot.style.display = 'block';
+        forgot.classList.add('active');
+    }
 }
 
 // ============================================================
-//  MOSTRAR PANTALLA PRINCIPAL
+//  MOSTRAR PANTALLAS
 // ============================================================
 function showMainScreen() {
     const auth = document.getElementById('authSection');
@@ -130,14 +137,12 @@ async function loadEpisodes() {
 }
 
 // ============================================================
-//  FUNCIÓN PRINCIPAL - SE EJECUTA CUANDO CARGA LA PÁGINA
+//  EVENTOS - CUANDO EL DOM ESTÁ LISTO
 // ============================================================
 document.addEventListener('DOMContentLoaded', function() {
     console.log('✅ DOM cargado - configurando eventos...');
     
-    // ============================================================
-    //  MOSTRAR FORMULARIO DE LOGIN POR DEFECTO
-    // ============================================================
+    // Mostrar login por defecto
     showForm('login');
     showAuthScreen();
     
@@ -151,8 +156,6 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('🔄 Click en "Registrarse"');
             showForm('register');
         });
-    } else {
-        console.error('❌ No se encontró #showRegister');
     }
     
     // ============================================================
@@ -165,8 +168,6 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('🔄 Click en "Iniciar sesión"');
             showForm('login');
         });
-    } else {
-        console.error('❌ No se encontró #showLogin');
     }
     
     // ============================================================
@@ -182,7 +183,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // ============================================================
-    //  BOTÓN: VOLVER A LOGIN DESDE FORGOT
+    //  BOTÓN: VOLVER A LOGIN
     // ============================================================
     const backToLogin = document.getElementById('showLoginFromForgot');
     if (backToLogin) {
@@ -226,10 +227,8 @@ document.addEventListener('DOMContentLoaded', function() {
             saveUsers();
             showNotification('✅ ¡Registro exitoso! Ahora inicia sesión', 'success');
             showForm('login');
-            console.log('✅ Usuario registrado:', email, 'Total:', users.length);
+            console.log('✅ Usuario registrado:', email);
         });
-    } else {
-        console.error('❌ No se encontró #registerFormElement');
     }
     
     // ============================================================
@@ -252,8 +251,9 @@ document.addEventListener('DOMContentLoaded', function() {
             const user = users.find(u => u.email === email && u.password === password);
             if (user) {
                 showNotification('✅ ¡Bienvenido ' + user.name + '!', 'success');
+                const nameDisplay = document.getElementById('userNameDisplay');
+                if (nameDisplay) nameDisplay.textContent = user.name;
                 showMainScreen();
-                document.getElementById('userNameDisplay').textContent = user.name;
                 loadCharacters();
                 console.log('✅ Login exitoso:', user.name);
             } else {
@@ -261,8 +261,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log('❌ Login fallido');
             }
         });
-    } else {
-        console.error('❌ No se encontró #loginFormElement');
     }
     
     // ============================================================
@@ -301,10 +299,13 @@ document.addEventListener('DOMContentLoaded', function() {
     if (navChars) {
         navChars.addEventListener('click', function() {
             console.log('🔄 Navegando a Personajes');
-            document.getElementById('charactersSection').style.display = 'block';
-            document.getElementById('episodesSection').style.display = 'none';
+            const chars = document.getElementById('charactersSection');
+            const eps = document.getElementById('episodesSection');
+            if (chars) chars.style.display = 'block';
+            if (eps) eps.style.display = 'none';
             navChars.classList.add('active');
-            document.getElementById('navEpisodes').classList.remove('active');
+            const navEps = document.getElementById('navEpisodes');
+            if (navEps) navEps.classList.remove('active');
             loadCharacters();
         });
     }
@@ -316,10 +317,13 @@ document.addEventListener('DOMContentLoaded', function() {
     if (navEps) {
         navEps.addEventListener('click', function() {
             console.log('🔄 Navegando a Episodios');
-            document.getElementById('episodesSection').style.display = 'block';
-            document.getElementById('charactersSection').style.display = 'none';
+            const chars = document.getElementById('charactersSection');
+            const eps = document.getElementById('episodesSection');
+            if (eps) eps.style.display = 'block';
+            if (chars) chars.style.display = 'none';
             navEps.classList.add('active');
-            document.getElementById('navCharacters').classList.remove('active');
+            const navChars = document.getElementById('navCharacters');
+            if (navChars) navChars.classList.remove('active');
             loadEpisodes();
         });
     }
@@ -340,14 +344,15 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // ============================================================
-    //  CONFIGURAR TEMA INICIAL
+    //  TEMA INICIAL
     // ============================================================
     const savedTheme = localStorage.getItem('rickmorty_theme') || 'dark';
     document.documentElement.setAttribute('data-theme', savedTheme);
-    if (themeToggle) {
-        themeToggle.textContent = savedTheme === 'dark' ? '🌙' : '☀️';
+    const themeBtn = document.getElementById('themeToggle');
+    if (themeBtn) {
+        themeBtn.textContent = savedTheme === 'dark' ? '🌙' : '☀️';
     }
     
-    console.log('✅ Todos los eventos configurados correctamente');
+    console.log('✅ Todos los eventos configurados');
     console.log('👥 Usuarios guardados:', users.length);
 });

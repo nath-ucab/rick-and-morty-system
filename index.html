@@ -5,14 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Rick and Morty System</title>
     <link rel="stylesheet" href="styles.css" />
-    <link rel="manifest" href="manifest.json" />
 </head>
 <body>
     <div id="app">
         <!-- ===== HEADER ===== -->
         <header>
             <div class="logo">
-                <h1>🧪 Rick & Morty</h1>
+                <h1>🧪 Rick &amp; Morty</h1>
                 <span class="subtitle">System</span>
             </div>
             <nav>
@@ -41,7 +40,7 @@
                 </div>
 
                 <!-- Register -->
-                <div id="registerForm" class="auth-box hidden">
+                <div id="registerForm" class="auth-box">
                     <h2>📝 Registrarse</h2>
                     <form id="registerFormElement">
                         <input type="text" id="registerName" placeholder="Nombre completo" required />
@@ -54,7 +53,7 @@
                 </div>
 
                 <!-- Forgot Password -->
-                <div id="forgotPasswordForm" class="auth-box hidden">
+                <div id="forgotPasswordForm" class="auth-box">
                     <h2>🔑 Recuperar Contraseña</h2>
                     <form id="forgotPasswordFormElement">
                         <input type="email" id="forgotEmail" placeholder="Correo electrónico" required />
@@ -66,8 +65,7 @@
         </section>
 
         <!-- ===== MAIN CONTENT ===== -->
-        <section id="mainSection" class="hidden">
-            <!-- Mensaje de bienvenida -->
+        <section id="mainSection" style="display:none;">
             <div id="welcomeMessage">
                 <h2>👋 ¡Bienvenido, <span id="userNameDisplay">Usuario</span>!</h2>
                 <p>Explora el universo de Rick and Morty</p>
@@ -86,20 +84,20 @@
                     <table id="charactersTable">
                         <thead>
                             <tr>
-                                <th data-sort="id">ID <span class="sort-arrow">↕</span></th>
-                                <th data-sort="name">Nombre <span class="sort-arrow">↕</span></th>
-                                <th data-sort="species">Especie <span class="sort-arrow">↕</span></th>
-                                <th data-sort="gender">Género <span class="sort-arrow">↕</span></th>
-                                <th data-sort="type">Tipo <span class="sort-arrow">↕</span></th>
+                                <th data-sort="id">ID</th>
+                                <th data-sort="name">Nombre</th>
+                                <th data-sort="species">Especie</th>
+                                <th data-sort="gender">Género</th>
+                                <th data-sort="type">Tipo</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody id="charactersTableBody">
-                            <!-- Datos cargados por JavaScript -->
+                            <tr><td colspan="6" style="text-align:center;">Cargando personajes...</td></tr>
                         </tbody>
                     </table>
                 </div>
-                <div class="pagination" id="charactersPagination">
+                <div class="pagination">
                     <button id="charPrevPage">◀ Anterior</button>
                     <span id="charPageInfo">Página 1</span>
                     <button id="charNextPage">Siguiente ▶</button>
@@ -107,7 +105,7 @@
             </div>
 
             <!-- ===== EPISODES ===== -->
-            <div id="episodesSection" class="hidden">
+            <div id="episodesSection" style="display:none;">
                 <div class="section-header">
                     <h2>📺 Episodios</h2>
                     <div class="search-bar">
@@ -119,19 +117,19 @@
                     <table id="episodesTable">
                         <thead>
                             <tr>
-                                <th data-sort="id">ID <span class="sort-arrow">↕</span></th>
-                                <th data-sort="name">Nombre <span class="sort-arrow">↕</span></th>
-                                <th data-sort="air_date">Fecha emisión <span class="sort-arrow">↕</span></th>
-                                <th data-sort="episode">Código <span class="sort-arrow">↕</span></th>
+                                <th data-sort="id">ID</th>
+                                <th data-sort="name">Nombre</th>
+                                <th data-sort="air_date">Fecha emisión</th>
+                                <th data-sort="episode">Código</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody id="episodesTableBody">
-                            <!-- Datos cargados por JavaScript -->
+                            <tr><td colspan="5" style="text-align:center;">Cargando episodios...</td></tr>
                         </tbody>
                     </table>
                 </div>
-                <div class="pagination" id="episodesPagination">
+                <div class="pagination">
                     <button id="episodePrevPage">◀ Anterior</button>
                     <span id="episodePageInfo">Página 1</span>
                     <button id="episodeNextPage">Siguiente ▶</button>
@@ -139,31 +137,26 @@
             </div>
         </section>
 
-        <!-- ===== DETAIL MODAL ===== -->
+        <!-- ===== MODALES ===== -->
         <div id="detailModal" class="modal hidden">
             <div class="modal-content">
                 <span class="modal-close">&times;</span>
-                <div id="detailContent">
-                    <!-- Cargado por JavaScript -->
-                </div>
+                <div id="detailContent"></div>
             </div>
         </div>
 
-        <!-- ===== EDIT MODAL ===== -->
         <div id="editModal" class="modal hidden">
             <div class="modal-content">
                 <span class="modal-close">&times;</span>
                 <h2>✏️ Editar</h2>
                 <form id="editForm">
-                    <div id="editFields">
-                        <!-- Cargado por JavaScript -->
-                    </div>
+                    <div id="editFields"></div>
                     <button type="submit">💾 Guardar cambios</button>
                 </form>
             </div>
         </div>
 
-        <!-- ===== NOTIFICACIONES ===== -->
+        <!-- ===== NOTIFICACIÓN ===== -->
         <div id="notification" class="hidden"></div>
     </div>
 
