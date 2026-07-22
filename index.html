@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rick and Morty System</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="manifest" href="manifest.json" />
+</head>
+<body>
+    <div id="app">
+        <!-- ===== HEADER ===== -->
+        <header>
+            <div class="logo">
+                <h1>🧪 Rick & Morty</h1>
+                <span class="subtitle">System</span>
+            </div>
+            <nav>
+                <button id="navCharacters" class="active">👽 Personajes</button>
+                <button id="navEpisodes">📺 Episodios</button>
+            </nav>
+            <div class="header-actions">
+                <button id="themeToggle" class="icon-btn">🌙</button>
+                <button id="logoutBtn" class="icon-btn">🚪</button>
+            </div>
+        </header>
+
+        <!-- ===== AUTH SECTION ===== -->
+        <section id="authSection">
+            <div class="auth-container">
+                <!-- Login -->
+                <div id="loginForm" class="auth-box active">
+                    <h2>🔐 Iniciar Sesión</h2>
+                    <form id="loginFormElement">
+                        <input type="email" id="loginEmail" placeholder="Correo electrónico" required />
+                        <input type="password" id="loginPassword" placeholder="Contraseña" required />
+                        <button type="submit">Ingresar</button>
+                    </form>
+                    <p>¿No tienes cuenta? <a href="#" id="showRegister">Regístrate</a></p>
+                    <p><a href="#" id="showForgotPassword">¿Olvidaste tu contraseña?</a></p>
+                </div>
+
+                <!-- Register -->
+                <div id="registerForm" class="auth-box hidden">
+                    <h2>📝 Registrarse</h2>
+                    <form id="registerFormElement">
+                        <input type="text" id="registerName" placeholder="Nombre completo" required />
+                        <input type="email" id="registerEmail" placeholder="Correo electrónico" required />
+                        <input type="password" id="registerPassword" placeholder="Contraseña" required />
+                        <input type="password" id="registerConfirmPassword" placeholder="Confirmar contraseña" required />
+                        <button type="submit">Registrarse</button>
+                    </form>
+                    <p>¿Ya tienes cuenta? <a href="#" id="showLogin">Inicia sesión</a></p>
+                </div>
+
+                <!-- Forgot Password -->
+                <div id="forgotPasswordForm" class="auth-box hidden">
+                    <h2>🔑 Recuperar Contraseña</h2>
+                    <form id="forgotPasswordFormElement">
+                        <input type="email" id="forgotEmail" placeholder="Correo electrónico" required />
+                        <button type="submit">Enviar enlace</button>
+                    </form>
+                    <p><a href="#" id="showLoginFromForgot">Volver a inicio de sesión</a></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== MAIN CONTENT ===== -->
+        <section id="mainSection" class="hidden">
+            <!-- Mensaje de bienvenida -->
+            <div id="welcomeMessage">
+                <h2>👋 ¡Bienvenido, <span id="userNameDisplay">Usuario</span>!</h2>
+                <p>Explora el universo de Rick and Morty</p>
+            </div>
+
+            <!-- ===== CHARACTERS ===== -->
+            <div id="charactersSection">
+                <div class="section-header">
+                    <h2>👽 Personajes</h2>
+                    <div class="search-bar">
+                        <input type="text" id="characterSearch" placeholder="Buscar personaje..." />
+                        <button id="characterSearchBtn">🔍</button>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table id="charactersTable">
+                        <thead>
+                            <tr>
+                                <th data-sort="id">ID <span class="sort-arrow">↕</span></th>
+                                <th data-sort="name">Nombre <span class="sort-arrow">↕</span></th>
+                                <th data-sort="species">Especie <span class="sort-arrow">↕</span></th>
+                                <th data-sort="gender">Género <span class="sort-arrow">↕</span></th>
+                                <th data-sort="type">Tipo <span class="sort-arrow">↕</span></th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="charactersTableBody">
+                            <!-- Datos cargados por JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pagination" id="charactersPagination">
+                    <button id="charPrevPage">◀ Anterior</button>
+                    <span id="charPageInfo">Página 1</span>
+                    <button id="charNextPage">Siguiente ▶</button>
+                </div>
+            </div>
+
+            <!-- ===== EPISODES ===== -->
+            <div id="episodesSection" class="hidden">
+                <div class="section-header">
+                    <h2>📺 Episodios</h2>
+                    <div class="search-bar">
+                        <input type="text" id="episodeSearch" placeholder="Buscar episodio..." />
+                        <button id="episodeSearchBtn">🔍</button>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table id="episodesTable">
+                        <thead>
+                            <tr>
+                                <th data-sort="id">ID <span class="sort-arrow">↕</span></th>
+                                <th data-sort="name">Nombre <span class="sort-arrow">↕</span></th>
+                                <th data-sort="air_date">Fecha emisión <span class="sort-arrow">↕</span></th>
+                                <th data-sort="episode">Código <span class="sort-arrow">↕</span></th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="episodesTableBody">
+                            <!-- Datos cargados por JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pagination" id="episodesPagination">
+                    <button id="episodePrevPage">◀ Anterior</button>
+                    <span id="episodePageInfo">Página 1</span>
+                    <button id="episodeNextPage">Siguiente ▶</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== DETAIL MODAL ===== -->
+        <div id="detailModal" class="modal hidden">
+            <div class="modal-content">
+                <span class="modal-close">&times;</span>
+                <div id="detailContent">
+                    <!-- Cargado por JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== EDIT MODAL ===== -->
+        <div id="editModal" class="modal hidden">
+            <div class="modal-content">
+                <span class="modal-close">&times;</span>
+                <h2>✏️ Editar</h2>
+                <form id="editForm">
+                    <div id="editFields">
+                        <!-- Cargado por JavaScript -->
+                    </div>
+                    <button type="submit">💾 Guardar cambios</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- ===== NOTIFICACIONES ===== -->
+        <div id="notification" class="hidden"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
