@@ -8,7 +8,7 @@
 </head>
 <body>
     <div id="app">
-        <!-- ===== HEADER ===== -->
+        <!-- HEADER -->
         <header>
             <div class="logo">
                 <h1>🧪 Rick &amp; Morty</h1>
@@ -24,10 +24,9 @@
             </div>
         </header>
 
-        <!-- ===== AUTH SECTION ===== -->
+        <!-- AUTH -->
         <section id="authSection">
             <div class="auth-container">
-                <!-- Login -->
                 <div id="loginForm" class="auth-box active">
                     <h2>🔐 Iniciar Sesión</h2>
                     <form id="loginFormElement">
@@ -39,7 +38,6 @@
                     <p><a href="#" id="showForgotPassword">¿Olvidaste tu contraseña?</a></p>
                 </div>
 
-                <!-- Register -->
                 <div id="registerForm" class="auth-box">
                     <h2>📝 Registrarse</h2>
                     <form id="registerFormElement">
@@ -52,7 +50,6 @@
                     <p>¿Ya tienes cuenta? <a href="#" id="showLogin">Inicia sesión</a></p>
                 </div>
 
-                <!-- Forgot Password -->
                 <div id="forgotPasswordForm" class="auth-box">
                     <h2>🔑 Recuperar Contraseña</h2>
                     <form id="forgotPasswordFormElement">
@@ -64,14 +61,14 @@
             </div>
         </section>
 
-        <!-- ===== MAIN CONTENT ===== -->
+        <!-- MAIN -->
         <section id="mainSection" style="display:none;">
             <div id="welcomeMessage">
                 <h2>👋 ¡Bienvenido, <span id="userNameDisplay">Usuario</span>!</h2>
                 <p>Explora el universo de Rick and Morty</p>
             </div>
 
-            <!-- ===== CHARACTERS ===== -->
+            <!-- CHARACTERS -->
             <div id="charactersSection">
                 <div class="section-header">
                     <h2>👽 Personajes</h2>
@@ -84,27 +81,22 @@
                     <table id="charactersTable">
                         <thead>
                             <tr>
-                                <th data-sort="id">ID</th>
-                                <th data-sort="name">Nombre</th>
-                                <th data-sort="species">Especie</th>
-                                <th data-sort="gender">Género</th>
-                                <th data-sort="type">Tipo</th>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Especie</th>
+                                <th>Género</th>
+                                <th>Tipo</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody id="charactersTableBody">
-                            <tr><td colspan="6" style="text-align:center;">Cargando personajes...</td></tr>
+                            <tr><td colspan="6" style="text-align:center;">🔄 Cargando personajes...</td></tr>
                         </tbody>
                     </table>
                 </div>
-                <div class="pagination">
-                    <button id="charPrevPage">◀ Anterior</button>
-                    <span id="charPageInfo">Página 1</span>
-                    <button id="charNextPage">Siguiente ▶</button>
-                </div>
             </div>
 
-            <!-- ===== EPISODES ===== -->
+            <!-- EPISODES -->
             <div id="episodesSection" style="display:none;">
                 <div class="section-header">
                     <h2>📺 Episodios</h2>
@@ -117,27 +109,22 @@
                     <table id="episodesTable">
                         <thead>
                             <tr>
-                                <th data-sort="id">ID</th>
-                                <th data-sort="name">Nombre</th>
-                                <th data-sort="air_date">Fecha emisión</th>
-                                <th data-sort="episode">Código</th>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Fecha emisión</th>
+                                <th>Código</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody id="episodesTableBody">
-                            <tr><td colspan="5" style="text-align:center;">Cargando episodios...</td></tr>
+                            <tr><td colspan="5" style="text-align:center;">🔄 Cargando episodios...</td></tr>
                         </tbody>
                     </table>
-                </div>
-                <div class="pagination">
-                    <button id="episodePrevPage">◀ Anterior</button>
-                    <span id="episodePageInfo">Página 1</span>
-                    <button id="episodeNextPage">Siguiente ▶</button>
                 </div>
             </div>
         </section>
 
-        <!-- ===== MODALES ===== -->
+        <!-- MODAL DETALLE -->
         <div id="detailModal" class="modal hidden">
             <div class="modal-content">
                 <span class="modal-close">&times;</span>
@@ -145,6 +132,7 @@
             </div>
         </div>
 
+        <!-- MODAL EDITAR -->
         <div id="editModal" class="modal hidden">
             <div class="modal-content">
                 <span class="modal-close">&times;</span>
@@ -156,7 +144,7 @@
             </div>
         </div>
 
-        <!-- ===== NOTIFICACIÓN ===== -->
+        <!-- NOTIFICACIÓN -->
         <div id="notification" class="hidden"></div>
     </div>
 

@@ -1,5 +1,5 @@
 // ============================================================
-//  RICK AND MORTY SYSTEM - VERSIÓN COMPLETA
+//  RICK AND MORTY SYSTEM - VERSIÓN FINAL
 // ============================================================
 
 console.log('🚀 Iniciando Rick and Morty System...');
@@ -71,10 +71,8 @@ function showAuthScreen() {
 //  CERRAR MODALES
 // ============================================================
 function closeModals() {
-    const detail = document.getElementById('detailModal');
-    const edit = document.getElementById('editModal');
-    if (detail) detail.classList.add('hidden');
-    if (edit) edit.classList.add('hidden');
+    document.getElementById('detailModal')?.classList.add('hidden');
+    document.getElementById('editModal')?.classList.add('hidden');
 }
 
 // ============================================================
@@ -82,7 +80,6 @@ function closeModals() {
 // ============================================================
 let allCharacters = [];
 let allEpisodes = [];
-let currentPage = 'characters';
 
 // ============================================================
 //  CARGAR PERSONAJES
@@ -151,7 +148,7 @@ function viewCharacter(id) {
     if (content) {
         content.innerHTML = `
             <div class="detail-card">
-                <img src="${char.image}" alt="${char.name}" />
+                <img src="${char.image}" alt="${char.name}" style="width:150px;height:150px;border-radius:50%;object-fit:cover;border:4px solid #e94560;" />
                 <div class="detail-info">
                     <h2>${char.name}</h2>
                     <p><strong>ID:</strong> ${char.id}</p>
@@ -166,8 +163,7 @@ function viewCharacter(id) {
             </div>
         `;
     }
-    const modal = document.getElementById('detailModal');
-    if (modal) modal.classList.remove('hidden');
+    document.getElementById('detailModal')?.classList.remove('hidden');
 }
 
 // ============================================================
@@ -184,15 +180,20 @@ function editCharacter(id) {
     if (fields) {
         fields.innerHTML = `
             <input type="hidden" id="editId" value="${char.id}" />
-            <input type="text" id="editName" value="${char.name}" placeholder="Nombre" required />
-            <input type="text" id="editSpecies" value="${char.species}" placeholder="Especie" required />
+            <label>Nombre:</label>
+            <input type="text" id="editName" value="${char.name}" required />
+            <label>Especie:</label>
+            <input type="text" id="editSpecies" value="${char.species}" required />
+            <label>Género:</label>
             <select id="editGender">
                 <option value="Male" ${char.gender === 'Male' ? 'selected' : ''}>Male</option>
                 <option value="Female" ${char.gender === 'Female' ? 'selected' : ''}>Female</option>
                 <option value="Genderless" ${char.gender === 'Genderless' ? 'selected' : ''}>Genderless</option>
                 <option value="Unknown" ${char.gender === 'Unknown' ? 'selected' : ''}>Unknown</option>
             </select>
-            <input type="text" id="editType" value="${char.type || ''}" placeholder="Tipo" />
+            <label>Tipo:</label>
+            <input type="text" id="editType" value="${char.type || ''}" />
+            <label>Estado:</label>
             <select id="editStatus">
                 <option value="Alive" ${char.status === 'Alive' ? 'selected' : ''}>Alive</option>
                 <option value="Dead" ${char.status === 'Dead' ? 'selected' : ''}>Dead</option>
@@ -200,8 +201,7 @@ function editCharacter(id) {
             </select>
         `;
     }
-    const modal = document.getElementById('editModal');
-    if (modal) modal.classList.remove('hidden');
+    document.getElementById('editModal')?.classList.remove('hidden');
 }
 
 function saveEdit() {
@@ -304,8 +304,7 @@ function viewEpisode(id) {
             </div>
         `;
     }
-    const modal = document.getElementById('detailModal');
-    if (modal) modal.classList.remove('hidden');
+    document.getElementById('detailModal')?.classList.remove('hidden');
 }
 
 // ============================================================
@@ -322,13 +321,15 @@ function editEpisode(id) {
     if (fields) {
         fields.innerHTML = `
             <input type="hidden" id="editEpisodeId" value="${ep.id}" />
-            <input type="text" id="editEpisodeName" value="${ep.name}" placeholder="Nombre" required />
-            <input type="text" id="editEpisodeCode" value="${ep.episode}" placeholder="Código" required />
-            <input type="text" id="editEpisodeDate" value="${ep.air_date}" placeholder="Fecha de emisión" required />
+            <label>Nombre:</label>
+            <input type="text" id="editEpisodeName" value="${ep.name}" required />
+            <label>Código:</label>
+            <input type="text" id="editEpisodeCode" value="${ep.episode}" required />
+            <label>Fecha de emisión:</label>
+            <input type="text" id="editEpisodeDate" value="${ep.air_date}" required />
         `;
     }
-    const modal = document.getElementById('editModal');
-    if (modal) modal.classList.remove('hidden');
+    document.getElementById('editModal')?.classList.remove('hidden');
     
     // Cambiar el submit para episodios
     const form = document.getElementById('editForm');
@@ -361,21 +362,19 @@ function saveEpisodeEdit() {
 }
 
 // ============================================================
-//  BUSCADOR
+//  BUSCADORES
 // ============================================================
 function searchCharacters() {
     const input = document.getElementById('characterSearch');
     if (input) {
-        const term = input.value.trim();
-        loadCharacters(term);
+        loadCharacters(input.value.trim());
     }
 }
 
 function searchEpisodes() {
     const input = document.getElementById('episodeSearch');
     if (input) {
-        const term = input.value.trim();
-        loadEpisodes(term);
+        loadEpisodes(input.value.trim());
     }
 }
 
@@ -385,52 +384,37 @@ function searchEpisodes() {
 document.addEventListener('DOMContentLoaded', function() {
     console.log('✅ DOM cargado - configurando eventos...');
     
-    // Mostrar login por defecto
     showForm('login');
     showAuthScreen();
     
     // ============================================================
-    //  BOTÓN: REGISTRARSE
+    //  NAVEGACIÓN ENTRE FORMULARIOS
     // ============================================================
     document.getElementById('showRegister')?.addEventListener('click', function(e) {
         e.preventDefault();
-        console.log('🔄 Click en "Registrarse"');
         showForm('register');
     });
     
-    // ============================================================
-    //  BOTÓN: INICIAR SESIÓN
-    // ============================================================
     document.getElementById('showLogin')?.addEventListener('click', function(e) {
         e.preventDefault();
-        console.log('🔄 Click en "Iniciar sesión"');
         showForm('login');
     });
     
-    // ============================================================
-    //  BOTÓN: OLVIDÉ CONTRASEÑA
-    // ============================================================
     document.getElementById('showForgotPassword')?.addEventListener('click', function(e) {
         e.preventDefault();
-        console.log('🔄 Click en "Olvidé contraseña"');
         showForm('forgot');
     });
     
-    // ============================================================
-    //  BOTÓN: VOLVER A LOGIN
-    // ============================================================
     document.getElementById('showLoginFromForgot')?.addEventListener('click', function(e) {
         e.preventDefault();
-        console.log('🔄 Volver a login');
         showForm('login');
     });
     
     // ============================================================
-    //  FORMULARIO: REGISTRO
+    //  REGISTRO
     // ============================================================
     document.getElementById('registerFormElement')?.addEventListener('submit', function(e) {
         e.preventDefault();
-        console.log('🔄 Enviando registro...');
         
         const name = document.getElementById('registerName')?.value.trim();
         const email = document.getElementById('registerEmail')?.value.trim();
@@ -456,15 +440,13 @@ document.addEventListener('DOMContentLoaded', function() {
         saveUsers();
         showNotification('✅ ¡Registro exitoso! Ahora inicia sesión', 'success');
         showForm('login');
-        console.log('✅ Usuario registrado:', email);
     });
     
     // ============================================================
-    //  FORMULARIO: LOGIN
+    //  LOGIN
     // ============================================================
     document.getElementById('loginFormElement')?.addEventListener('submit', function(e) {
         e.preventDefault();
-        console.log('🔄 Enviando login...');
         
         const email = document.getElementById('loginEmail')?.value.trim();
         const password = document.getElementById('loginPassword')?.value.trim();
@@ -480,15 +462,13 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('userNameDisplay').textContent = user.name;
             showMainScreen();
             loadCharacters();
-            console.log('✅ Login exitoso:', user.name);
         } else {
             showNotification('❌ Credenciales incorrectas', 'error');
-            console.log('❌ Login fallido');
         }
     });
     
     // ============================================================
-    //  FORMULARIO: RECUPERAR CONTRASEÑA
+    //  RECUPERAR CONTRASEÑA
     // ============================================================
     document.getElementById('forgotPasswordFormElement')?.addEventListener('submit', function(e) {
         e.preventDefault();
@@ -502,19 +482,17 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // ============================================================
-    //  BOTÓN: CERRAR SESIÓN
+    //  CERRAR SESIÓN
     // ============================================================
     document.getElementById('logoutBtn')?.addEventListener('click', function() {
         showAuthScreen();
         showNotification('👋 Sesión cerrada', 'success');
-        console.log('🔄 Sesión cerrada');
     });
     
     // ============================================================
-    //  NAVEGACIÓN: PERSONAJES
+    //  NAVEGACIÓN PRINCIPAL
     // ============================================================
     document.getElementById('navCharacters')?.addEventListener('click', function() {
-        console.log('🔄 Navegando a Personajes');
         document.getElementById('charactersSection').style.display = 'block';
         document.getElementById('episodesSection').style.display = 'none';
         this.classList.add('active');
@@ -522,11 +500,7 @@ document.addEventListener('DOMContentLoaded', function() {
         loadCharacters();
     });
     
-    // ============================================================
-    //  NAVEGACIÓN: EPISODIOS
-    // ============================================================
     document.getElementById('navEpisodes')?.addEventListener('click', function() {
-        console.log('🔄 Navegando a Episodios');
         document.getElementById('episodesSection').style.display = 'block';
         document.getElementById('charactersSection').style.display = 'none';
         this.classList.add('active');
@@ -555,18 +529,15 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     window.addEventListener('click', function(e) {
-        const detail = document.getElementById('detailModal');
-        const edit = document.getElementById('editModal');
-        if (e.target === detail) closeModals();
-        if (e.target === edit) closeModals();
+        if (e.target === document.getElementById('detailModal')) closeModals();
+        if (e.target === document.getElementById('editModal')) closeModals();
     });
     
     // ============================================================
-    //  EDIT FORM - GUARDAR
+    //  EDIT FORM
     // ============================================================
     document.getElementById('editForm')?.addEventListener('submit', function(e) {
         e.preventDefault();
-        // Verificar si estamos editando personaje o episodio
         if (document.getElementById('editId')) {
             saveEdit();
         } else if (document.getElementById('editEpisodeId')) {
@@ -589,9 +560,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // ============================================================
-    //  TEMA INICIAL
-    // ============================================================
     const savedTheme = localStorage.getItem('rickmorty_theme') || 'dark';
     document.documentElement.setAttribute('data-theme', savedTheme);
     if (themeToggle) {
@@ -599,5 +567,4 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     console.log('✅ Todos los eventos configurados');
-    console.log('👥 Usuarios guardados:', users.length);
 });
