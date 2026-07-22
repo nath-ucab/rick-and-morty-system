@@ -1,16 +1,10 @@
 {
     "name": "Rick and Morty System",
     "short_name": "R&M System",
-    "description": "Aplicación para explorar el universo de Rick and Morty",
-    "start_url": "/",
+    "description": "Aplicación para gestionar personajes y episodios de Rick and Morty",
+    "start_url": "/index.html",
     "display": "standalone",
-    "background_color": "#0f0f1a",
-    "theme_color": "#e94560",
-    "icons": [
-        {
-            "src": "https://rickandmortyapi.com/icons/icon-512x512.png",
-            "sizes": "512x512",
-            "type": "image/png"
-        }
-    ]
+    "background_color": "#1a1a2e",
+    "theme_color": "#4a90d9",
+    "icons": []
 }

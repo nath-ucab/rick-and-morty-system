@@ -1,153 +1,172 @@
 <!DOCTYPE html>
-<html lang="es" data-theme="dark">
+<html lang="es">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rick and Morty System</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="manifest" href="manifest.json">
 </head>
 <body>
-    <div id="app">
-        <!-- HEADER -->
-        <header>
-            <div class="logo">
-                <h1>🧪 Rick &amp; Morty</h1>
-                <span class="subtitle">System</span>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <h1>🪐 Rick & Morty</h1>
             </div>
-            <nav>
-                <button id="navCharacters" class="active">👽 Personajes</button>
-                <button id="navEpisodes">📺 Episodios</button>
-            </nav>
-            <div class="header-actions">
-                <button id="themeToggle" class="icon-btn">🌙</button>
-                <button id="logoutBtn" class="icon-btn">🚪</button>
+            <div class="nav-menu" id="navMenu">
+                <a href="#" class="nav-link active" data-page="characters">Personajes</a>
+                <a href="#" class="nav-link" data-page="episodes">Episodios</a>
+                <a href="#" class="nav-link" data-page="profile" id="profileLink">Perfil</a>
+                <button id="logoutBtn" class="btn-logout">Cerrar Sesión</button>
             </div>
-        </header>
+            <div class="nav-controls">
+                <button id="themeToggle" class="theme-btn">🌙</button>
+                <button id="mobileMenuBtn" class="mobile-menu-btn">☰</button>
+            </div>
+        </div>
+    </nav>
 
-        <!-- AUTH -->
-        <section id="authSection">
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Auth Section -->
+        <div id="authSection" class="auth-section">
             <div class="auth-container">
-                <div id="loginForm" class="auth-box active">
-                    <h2>🔐 Iniciar Sesión</h2>
-                    <form id="loginFormElement">
-                        <input type="email" id="loginEmail" placeholder="Correo electrónico" required />
-                        <input type="password" id="loginPassword" placeholder="Contraseña" required />
-                        <button type="submit">Ingresar</button>
-                    </form>
-                    <p>¿No tienes cuenta? <a href="#" id="showRegister">Regístrate</a></p>
-                    <p><a href="#" id="showForgotPassword">¿Olvidaste tu contraseña?</a></p>
+                <div class="auth-tabs">
+                    <button class="auth-tab active" data-tab="login">Iniciar Sesión</button>
+                    <button class="auth-tab" data-tab="register">Registrarse</button>
                 </div>
+                
+                <!-- Login Form -->
+                <form id="loginForm" class="auth-form active">
+                    <h2>Bienvenido</h2>
+                    <div class="form-group">
+                        <label for="loginEmail">Email</label>
+                        <input type="email" id="loginEmail" placeholder="tu@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Contraseña</label>
+                        <input type="password" id="loginPassword" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Iniciar Sesión</button>
+                    <a href="#" id="forgotPasswordLink" class="forgot-link">¿Olvidaste tu contraseña?</a>
+                </form>
 
-                <div id="registerForm" class="auth-box">
-                    <h2>📝 Registrarse</h2>
-                    <form id="registerFormElement">
-                        <input type="text" id="registerName" placeholder="Nombre completo" required />
-                        <input type="email" id="registerEmail" placeholder="Correo electrónico" required />
-                        <input type="password" id="registerPassword" placeholder="Contraseña" required />
-                        <input type="password" id="registerConfirmPassword" placeholder="Confirmar contraseña" required />
-                        <button type="submit">Registrarse</button>
-                    </form>
-                    <p>¿Ya tienes cuenta? <a href="#" id="showLogin">Inicia sesión</a></p>
-                </div>
+                <!-- Register Form -->
+                <form id="registerForm" class="auth-form">
+                    <h2>Crear Cuenta</h2>
+                    <div class="form-group">
+                        <label for="registerName">Nombre</label>
+                        <input type="text" id="registerName" placeholder="Tu nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerEmail">Email</label>
+                        <input type="email" id="registerEmail" placeholder="tu@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword">Contraseña</label>
+                        <input type="password" id="registerPassword" placeholder="Mínimo 6 caracteres" required minlength="6">
+                    </div>
+                    <button type="submit" class="btn-primary">Registrarse</button>
+                </form>
 
-                <div id="forgotPasswordForm" class="auth-box">
-                    <h2>🔑 Recuperar Contraseña</h2>
-                    <form id="forgotPasswordFormElement">
-                        <input type="email" id="forgotEmail" placeholder="Correo electrónico" required />
-                        <button type="submit">Enviar enlace</button>
-                    </form>
-                    <p><a href="#" id="showLoginFromForgot">Volver a inicio de sesión</a></p>
-                </div>
+                <!-- Forgot Password Form -->
+                <form id="forgotForm" class="auth-form">
+                    <h2>Recuperar Contraseña</h2>
+                    <p>Ingresa tu email para recibir instrucciones</p>
+                    <div class="form-group">
+                        <label for="forgotEmail">Email</label>
+                        <input type="email" id="forgotEmail" placeholder="tu@email.com" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Enviar Instrucciones</button>
+                    <a href="#" id="backToLogin" class="back-link">← Volver al inicio de sesión</a>
+                </form>
             </div>
-        </section>
+        </div>
 
-        <!-- MAIN -->
-        <section id="mainSection" style="display:none;">
-            <div id="welcomeMessage">
-                <h2>👋 ¡Bienvenido, <span id="userNameDisplay">Usuario</span>!</h2>
-                <p>Explora el universo de Rick and Morty</p>
-            </div>
-
-            <!-- CHARACTERS -->
-            <div id="charactersSection">
+        <!-- App Content -->
+        <div id="appContent" class="app-content" style="display: none;">
+            <!-- Characters Section -->
+            <section id="charactersSection" class="section active">
                 <div class="section-header">
-                    <h2>👽 Personajes</h2>
-                    <div class="search-bar">
-                        <input type="text" id="characterSearch" placeholder="Buscar personaje..." />
-                        <button id="characterSearchBtn">🔍</button>
+                    <h2>Personajes</h2>
+                    <div class="search-container">
+                        <input type="text" id="characterSearch" placeholder="Buscar personaje..." class="search-input">
+                        <span class="search-icon">🔍</span>
                     </div>
                 </div>
                 <div class="table-container">
                     <table id="charactersTable">
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Nombre</th>
-                                <th>Especie</th>
-                                <th>Género</th>
-                                <th>Tipo</th>
+                                <th data-sort="id">ID</th>
+                                <th data-sort="name">Nombre</th>
+                                <th data-sort="species">Especie</th>
+                                <th data-sort="gender">Género</th>
+                                <th data-sort="type">Tipo</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
-                        <tbody id="charactersTableBody">
-                            <tr><td colspan="6" style="text-align:center;">🔄 Cargando personajes...</td></tr>
-                        </tbody>
+                        <tbody id="charactersTableBody"></tbody>
                     </table>
                 </div>
-            </div>
+                <div class="pagination" id="charactersPagination"></div>
+            </section>
 
-            <!-- EPISODES -->
-            <div id="episodesSection" style="display:none;">
+            <!-- Episodes Section -->
+            <section id="episodesSection" class="section">
                 <div class="section-header">
-                    <h2>📺 Episodios</h2>
-                    <div class="search-bar">
-                        <input type="text" id="episodeSearch" placeholder="Buscar episodio..." />
-                        <button id="episodeSearchBtn">🔍</button>
+                    <h2>Episodios</h2>
+                    <div class="search-container">
+                        <input type="text" id="episodeSearch" placeholder="Buscar episodio..." class="search-input">
+                        <span class="search-icon">🔍</span>
                     </div>
                 </div>
                 <div class="table-container">
                     <table id="episodesTable">
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Nombre</th>
-                                <th>Fecha emisión</th>
-                                <th>Código</th>
+                                <th data-sort="id">ID</th>
+                                <th data-sort="name">Nombre</th>
+                                <th data-sort="air_date">Fecha de Emisión</th>
+                                <th data-sort="episode">Código</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
-                        <tbody id="episodesTableBody">
-                            <tr><td colspan="5" style="text-align:center;">🔄 Cargando episodios...</td></tr>
-                        </tbody>
+                        <tbody id="episodesTableBody"></tbody>
                     </table>
                 </div>
-            </div>
-        </section>
+                <div class="pagination" id="episodesPagination"></div>
+            </section>
 
-        <!-- MODAL DETALLE -->
-        <div id="detailModal" class="modal hidden">
-            <div class="modal-content">
-                <span class="modal-close">&times;</span>
-                <div id="detailContent"></div>
-            </div>
+            <!-- Profile Section -->
+            <section id="profileSection" class="section">
+                <div class="profile-container">
+                    <h2>Mi Perfil</h2>
+                    <div class="profile-card">
+                        <div class="profile-avatar">👤</div>
+                        <div class="profile-info">
+                            <p><strong>Nombre:</strong> <span id="profileName"></span></p>
+                            <p><strong>Email:</strong> <span id="profileEmail"></span></p>
+                            <p><strong>Miembro desde:</strong> <span id="profileDate"></span></p>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
-
-        <!-- MODAL EDITAR -->
-        <div id="editModal" class="modal hidden">
-            <div class="modal-content">
-                <span class="modal-close">&times;</span>
-                <h2>✏️ Editar</h2>
-                <form id="editForm">
-                    <div id="editFields"></div>
-                    <button type="submit">💾 Guardar cambios</button>
-                </form>
-            </div>
-        </div>
-
-        <!-- NOTIFICACIÓN -->
-        <div id="notification" class="hidden"></div>
     </div>
 
-    <script src="script.js"></script>
+    <!-- Modal -->
+    <div id="detailModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/characters.js"></script>
+    <script src="js/episodes.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>

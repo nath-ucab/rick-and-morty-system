@@ -1,58 +1,86 @@
 const CACHE_NAME = 'rickmorty-v1';
-const STATIC_ASSETS = [
+const ASSETS_TO_CACHE = [
     '/',
     '/index.html',
-    '/styles.css',
-    '/script.js',
-    'https://rickandmortyapi.com/api/character',
-    'https://rickandmortyapi.com/api/episode'
+    '/css/styles.css',
+    '/js/auth.js',
+    '/js/characters.js',
+    '/js/episodes.js',
+    '/js/app.js'
 ];
 
-// Instalación - cachear recursos estáticos
-self.addEventListener('install', event => {
+self.addEventListener('install', function(event) {
     event.waitUntil(
         caches.open(CACHE_NAME)
-            .then(cache => {
-                console.log('Cacheando assets...');
-                return cache.addAll(STATIC_ASSETS);
+            .then(function(cache) {
+                console.log('Cache abierto');
+                return cache.addAll(ASSETS_TO_CACHE);
             })
-            .then(() => self.skipWaiting())
+            .then(function() {
+                return self.skipWaiting();
+            })
     );
 });
 
-// Activación - limpiar caches viejos
-self.addEventListener('activate', event => {
+self.addEventListener('activate', function(event) {
     event.waitUntil(
-        caches.keys()
-            .then(keys => {
-                return Promise.all(
-                    keys.filter(key => key !== CACHE_NAME)
-                        .map(key => caches.delete(key))
-                );
-            })
-            .then(() => self.clients.claim())
+        caches.keys().then(function(cacheNames) {
+            return Promise.all(
+                cacheNames.map(function(cacheName) {
+                    if (cacheName !== CACHE_NAME) {
+                        console.log('Eliminando cache antiguo:', cacheName);
+                        return caches.delete(cacheName);
+                    }
+                })
+            );
+        })
+        .then(function() {
+            return self.clients.claim();
+        })
     );
 });
 
-// Fetch - responder con caché o red
-self.addEventListener('fetch', event => {
-    event.respondWith(
-        caches.match(event.request)
-            .then(cached => {
-                if (cached) return cached;
-                return fetch(event.request)
-                    .then(response => {
-                        const clone = response.clone();
-                        caches.open(CACHE_NAME)
-                            .then(cache => cache.put(event.request, clone));
-                        return response;
-                    })
-                    .catch(() => {
-                        // Fallback para cuando no hay internet
-                        return new Response('Offline - Recurso no disponible', {
-                            status: 503,
-                            statusText: 'Service Unavailable'
+self.addEventListener('fetch', function(event) {
+    const request = event.request;
+    const url = new URL(request.url);
+    
+    if (request.method !== 'GET') {
+        event.respondWith(fetch(request));
+        return;
+    }
+
+    if (url.hostname.includes('rickandmortyapi.com')) {
+        event.respondWith(
+            fetch(request)
+                .then(function(response) {
+                    const responseToCache = response.clone();
+                    caches.open(CACHE_NAME)
+                        .then(function(cache) {
+                            cache.put(request, responseToCache);
                         });
+                    return response;
+                })
+                .catch(function() {
+                    return caches.match(request);
+                })
+        );
+        return;
+    }
+
+    event.respondWith(
+        caches.match(request)
+            .then(function(cachedResponse) {
+                if (cachedResponse) {
+                    return cachedResponse;
+                }
+                return fetch(request)
+                    .then(function(response) {
+                        const responseToCache = response.clone();
+                        caches.open(CACHE_NAME)
+                            .then(function(cache) {
+                                cache.put(request, responseToCache);
+                            });
+                        return response;
                     });
             })
     );
